@@ -15,6 +15,10 @@ points further away from the prediction:
 
 \\[\frac{1}{N}\sum_{i=1}^N\frac{(\hat{y_i} - y_i)^2}{e^{\gamma(\hat{y_i} - y_i)^2}}\\]
 
+The loss then gets this appearance:
+
+![Test]({{ site.url }}/assets/magneto-curve.svg)
+
 Unfortunately, the predictions instead gets stuck on one of the modes:
 
 ![Test]({{ site.url }}/assets/magneto-result.svg)
