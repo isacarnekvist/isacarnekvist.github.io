@@ -10,8 +10,10 @@ data, you get this result:
 
 ![Test]({{ site.url }}/assets/mse-result.svg)
 
-Instead of having MSE as loss, I tried a loss function where the error decays for
-points further away from the prediction:
+What I would want from a network I sample from is of course that the samples
+are from the same distribution as the target distribution.  Instead of having
+MSE as loss, I tried a loss function where the error decays for points further
+away from the prediction:
 
 \\[\frac{1}{N}\sum_{i=1}^N\frac{(\hat{y_i} - y_i)^2}{e^{\gamma(\hat{y_i} - y_i)^2}}\\]
 
