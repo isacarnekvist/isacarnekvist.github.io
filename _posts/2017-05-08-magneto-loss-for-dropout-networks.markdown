@@ -13,7 +13,7 @@ data, you get this result:
 Instead of having MSE as loss, I tried a loss function where the error decays for
 points further away from the prediction:
 
-$$\frac{1}{N}\sum_{i=1}^N\frac{(\hat{y_i} - y_i)^2}{e^{\gamma(\hat{y_i} - y_i)^2}}$$
+\\[\frac{1}{N}\sum_{i=1}^N\frac{(\hat{y_i} - y_i)^2}{e^{\gamma(\hat{y_i} - y_i)^2}}\\]
 
 Unfortunately, the predictions instead gets stuck on one of the modes:
 
