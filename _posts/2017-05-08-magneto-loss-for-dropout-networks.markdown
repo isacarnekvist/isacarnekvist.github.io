@@ -5,6 +5,8 @@ date:   2017-05-08 09:08:00 +0200
 categories: dropout
 ---
 
+NOTE: This is a crazy idea that in general will now work very well :)
+
 Using dropout networks [(link)][dropout-bayesian] trained with mean squared error loss on multimodal
 data, you get this result:
 
@@ -21,11 +23,10 @@ The loss then gets this appearance:
 
 ![Test]({{ site.url }}/assets/magneto-curve.svg)
 
-Unfortunately, the predictions instead gets stuck on one of the modes:
+This will however not work since the network can also lower its loss by pushing
+points such that MSE \\(\rightarrow \infty\\). If you have nice data however,
+you can at least fit it to one of the modes:
 
 ![Test]({{ site.url }}/assets/magneto-result.svg)
-
-
-Maybe including the variance in the loss somehow can alleviate this?
 
 [dropout-bayesian]: https://arxiv.org/abs/1506.02142
