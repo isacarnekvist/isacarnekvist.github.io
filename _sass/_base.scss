@@ -57,6 +57,15 @@ a {
   text-decoration: none;
 }
 
+img {
+    display: block;
+    margin: auto;
+}
+
+article a {
+  color: orange;
+}
+
 a:hover {
   text-decoration: underline;
 }
