@@ -40,7 +40,8 @@ In progress.
 # Graphical model, and an objective function
 
 Sampling proper future trajectories should come from a distribution which is
-conditioned on past states and actions (for non-markovian systems). We define a graphical model as follows:
+conditioned on past states and actions (plural for non-markovian systems). We
+define a graphical model as follows:
 
 ![PGM]({{ site.url }}/assets/model_prediction_pgm.svg)
 
