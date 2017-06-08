@@ -29,9 +29,10 @@ with a version of [WaveNet][wavenet], found [here][temporal-control].
 The paper with [prediction and control with temporal segment
 models][temporal-control] have nice ideas and good results, but have some
 theoretical flaws.  During inference of future trajectories, the latent
-dimension $$Z$$ is unknown, and sampling $$\mathcal{N}(0, I)$$ is not sound since if there
-exists only one correct future trajectory, this has a corresponding latent space probably smaller
-than a spherical gaussian.
+dimension $$Z$$ is unknown, since it is inferred from future states. Sampling
+$$\mathcal{N}(0, I)$$ during inference is not sound, since if there exists only
+one correct future trajectory, this has a corresponding latent space probably
+smaller than a spherical gaussian.
 
 ## 3. Samples should be from model uncertainty due to a complex, or unpredictable stochastic environment
 
