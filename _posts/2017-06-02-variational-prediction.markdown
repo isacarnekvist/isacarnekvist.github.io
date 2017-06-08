@@ -45,12 +45,12 @@ define a graphical model as follows:
 
 ![PGM]({{ site.url }}/assets/model_prediction_pgm.svg)
 
-In our case, the $$X$$ can be seen as an initial state and action, $$Z$$ as
-some latent stochastic variable that depends on the state we're in along with
-what action we take. Inuitively, it makes sense that the stochasticity in an
-environment depends on where you are, and what you do. The variable $$Y$$ is
-the successor state coming from and performing the joint state and action
-$$X$$. What we want to maximize is:
+In our case, the $$X$$ can be seen as the concatenation of an initial state and
+action, $$Z$$ as some latent stochastic variable that depends on the state
+we're in along with what action we take. Inuitively, it makes sense that the
+level of stochasticity varies in an environment depending on where you are, and
+what you do. The variable $$Y$$ is the successor state. What we want to
+maximize is:
 
 $$
 \begin{align*}
@@ -66,7 +66,7 @@ Starting from KL-divergence ($$\mathcal{D}$$), we can exactly derive the variati
 
 $$
 \begin{align*}
-    \mathcal{D}\left[ q(Z|X) || p(Z|Y, X) \right] &= \int_Z q(Z|X) \log \frac{q(Z|X)}{p(Z|Y, X)} \\
+    \mathcal{D}\left[ q(Z|X) \Vert p(Z|Y, X) \right] &= \int_Z q(Z|X) \log \frac{q(Z|X)}{p(Z|Y, X)} \\
                                                   &= -\int_Z q(Z|X) \log \frac{p(Z|Y, X)}{q(Z|X)} \\
                                                   &= -\int_Z q(Z|X) \log \frac{p(Z, Y| X)}{p(Y|X)q(Z|X)} \\
                                                   &= -\int_Z q(Z|X) \left[ \log \frac{p(Z, Y| X)}{q(Z|X)} - \log p(Y|X) \right]\\
@@ -88,11 +88,45 @@ and let the prior
 $$p(Z|Y, X) \sim \mathcal{N}(0, I)$$.
 By maximizing these together, we maximize the variational lower bound $$\mathcal{L}$$.
 Once converged, we have access to a distribution $$q$$ which is, as we required,
-conditioned on $$X$$ and from which we can generate future trajectories one step at a time.
+conditioned on $$X$$, which we transform through $$f$$ to generate future random trajectories one step at a time.
+
+## Avoiding trivial case optimization
+
+Let's say our model $$f$$ is the sum of two parts:
+
+$$f(x) = g(x) + h(z(x))$$
+
+Where $$f$$ is a deterministic model, and $$z(x)$$ is the stochastic part. In
+this case it would be trivial to maximize the lower bound by only optimizing
+$$g$$ with MSE and letting:
+
+$$z(x) \sim \mathcal{N}(0, I)$$
+
+$$h(x) = \mathbf{0}$$
+
+My idea is to let the function have the appearance:
+
+$$f(x) = x + h(z(x))$$
+
+This naturally incorporates the prior belief that the successor
+state/observation is close to $$x$$, and that the crucial stochasticity to
+model lies in the transition, or change, from $$x$$. If the observations are
+noisy you could do several things by using several timesteps of $$x$$:
+
+$$f(x_{1:t}) = x_t + h(z(x_{1:t}))$$
+
+If the observation noise is assumed to have no bias:
+
+$$f(x_{1:t}) = g(x_{1:t}) + h(z(x_{1:t}))$$
+
+Where $$g$$ is trained separately to minimize:
+
+$$\lVert g(x_{1:t}) - x_t \rVert^2_2$$
+
 
 # Notes regarding experiments
 
-- Do not model the goal as a part of the state if not necessary! Prediction
+- Do not model the goal as a part of the state if not necessary? Prediction
   might gradually change this over time, taking you into parts of the state
   space where a different goal (never seen) might influence the dynamics
   predictions.
